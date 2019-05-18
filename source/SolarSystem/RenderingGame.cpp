@@ -8,14 +8,24 @@ using namespace Library;
 namespace Rendering
 {
 	const XMVECTORF32 RenderingGame::BackgroundColor = Colors::Black;
-	const float RenderingGame::sCameraRotation = -70.0f;
-	const XMFLOAT3 RenderingGame::sCameraPosition = XMFLOAT3(-500.0f, 100.0f, 500.0f);
+	// 调整相机旋转角, 默认-70.0f
+	// 横向图
+	const float RenderingGame::sCameraRotation = -50.0f; // 视角逆时针旋转度数
+	// 俯视图
+	//const float RenderingGame::sCameraRotation = -250.0f; // 视角逆时针旋转度数
+
+	// 调整相机位置, 默认(-500.0f, 100.0f, 500.0f)
+	// 横向图
+	const XMFLOAT3 RenderingGame::sCameraPosition = XMFLOAT3(-1200.0f, 100.0f, 1200.0f); // 向远, 向上, 向侧
+	// 俯视图
+	//const XMFLOAT3 RenderingGame::sCameraPosition = XMFLOAT3(0.0f, 4800.0f, 000.0f); // 向远, 向上, 向侧
 
 	RenderingGame::RenderingGame(std::function<void*()> getWindowCallback, std::function<void(SIZE&)> getRenderTargetSizeCallback) :
 		Game(getWindowCallback, getRenderTargetSizeCallback), mRenderStateHelper(*this)
 	{
 	}
 
+	// 进行初始化
 	void RenderingGame::Initialize()
 	{
 		RasterizerStates::Initialize(mDirect3DDevice.Get());
@@ -92,6 +102,7 @@ namespace Rendering
 	{
 		mFpsComponent->Update(gameTime);
 
+		// 判断是否按下Esc键
 		if (mKeyboard->WasKeyPressedThisFrame(Keys::Escape))
 		{
 			Exit();

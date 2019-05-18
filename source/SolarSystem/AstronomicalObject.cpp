@@ -1,13 +1,13 @@
 #include "pch.h"
 
 /**
-* The amount of time in seconds for one day to pass on earth.
+* 模拟地球上一天的时间所需要的秒数, 默认0.5, 推荐0.1
 */
-#define SCALE_TIME_FOR_DAY 0.5f;
+#define SCALE_TIME_FOR_DAY 0.01f;
 /**
-* The amount of distance is world space a single astronomical unit will scale up with.
+* 天体间距离, 默认300.0f, 推荐100.0f
 */
-#define SCALE_ASTRONOMICAL_UNIT 300.0f;
+#define SCALE_ASTRONOMICAL_UNIT 120.0f;
 
 
 using namespace std;
@@ -20,20 +20,22 @@ namespace Rendering
 
 	const std::unordered_map<AstronomicalObjectName, AstronomicalObjectData> AstronomicalObject::sAstronomicalObjects =
 	{
+		// 分别对应环境光强度, 地轴偏转, 自转周期, 公转周期, 轨道距离, 大小
 		{ AstronomicalObjectName::Sun,			{1.0f, 0.0f, 25.375f, 0.0f, 0.0f, 15.0f, L"Content\\Textures\\SunColorMap.jpg"}},
-		{ AstronomicalObjectName::Mercury,		{0.0f, 177.43f, 58.646f, 87.969f, 0.389f, 0.382f, L"Content\\Textures\\MercuryColorMap.jpg"}},
-		{ AstronomicalObjectName::Venus,		{0.0f, 2.64f, 243.01f, 224.7f, 0.723f, 0.949f, L"Content\\Textures\\VenusColorMap.jpg"}},
-		{ AstronomicalObjectName::Earth,		{0.0f, 23.44f, 1.0f, 365.256f, 1.0f, 1.0f, L"Content\\Textures\\EarthColorMap.jpg"}},
-		{ AstronomicalObjectName::Moon,			{0.0f, 6.687f, 27.321f, 27.321f, 0.05f/*0.00257003846f*/, 0.273f, L"Content\\Textures\\MoonColorMap.jpg"}},
-		{ AstronomicalObjectName::Mars,			{0.0f, 25.19f, 1.024f, 686.98f, 1.524f, 0.532f, L"Content\\Textures\\MarsColorMap.jpg"}},
-		{ AstronomicalObjectName::Jupiter,		{0.0f, 3.13f, 0.4097222f, 4328.9f, 5.203f, 11.19f, L"Content\\Textures\\JupiterColorMap.jpg"}},
-		{ AstronomicalObjectName::Saturn,		{0.0f, 26.73f, 0.42638922f, 10734.65f, 9.582f, 9.26f, L"Content\\Textures\\SaturnColorMap.jpg"}},
-		{ AstronomicalObjectName::Uranus,		{0.0f, 97.9f, 0.7166667f, 30674.6f, 19.20f, 4.01f, L"Content\\Textures\\UranusColorMap.jpg"}},
-		{ AstronomicalObjectName::Neptune,		{0.0f, 28.32f, 0.67125f, 59757.8f, 30.05f, 3.88f, L"Content\\Textures\\NeptuneColorMap.jpg"}},
-		{ AstronomicalObjectName::Pluto,		{0.0f, 122.0f, 6.3874f, 90494.45f, 39.48f, 0.18f, L"Content\\Textures\\PlutoColorMap.jpg"}},
+		{ AstronomicalObjectName::Mercury,		{0.1f, 177.43f, 58.646f, 87.969f, 0.389f, 0.382f, L"Content\\Textures\\MercuryColorMap.jpg"}},
+		{ AstronomicalObjectName::Venus,		{0.1f, 2.64f, 243.01f, 224.7f, 0.723f, 0.949f, L"Content\\Textures\\VenusColorMap.jpg"}},
+		{ AstronomicalObjectName::Earth,		{0.1f, 23.44f, 1.0f, 365.256f, 1.0f, 1.0f, L"Content\\Textures\\EarthColorMap.jpg"}},
+		{ AstronomicalObjectName::Moon,			{0.1f, 6.687f, 27.321f, 27.321f, 0.05f/*0.00257003846f*/, 0.273f, L"Content\\Textures\\MoonColorMap.jpg"}},
+		{ AstronomicalObjectName::Mars,			{0.1f, 25.19f, 1.024f, 686.98f, 1.524f, 0.532f, L"Content\\Textures\\MarsColorMap.jpg"}},
+		{ AstronomicalObjectName::Jupiter,		{0.1f, 3.13f, 0.4097222f, 4328.9f, 5.203f, 11.19f, L"Content\\Textures\\JupiterColorMap.jpg"}},
+		{ AstronomicalObjectName::Saturn,		{0.1f, 26.73f, 0.42638922f, 10734.65f, 9.582f, 9.26f, L"Content\\Textures\\SaturnColorMap.jpg"}},
+		{ AstronomicalObjectName::Uranus,		{0.1f, 97.9f, 0.7166667f, 30674.6f, 19.20f, 4.01f, L"Content\\Textures\\UranusColorMap.jpg"}},
+		{ AstronomicalObjectName::Neptune,		{0.1f, 28.32f, 0.67125f, 59757.8f, 30.05f, 3.88f, L"Content\\Textures\\NeptuneColorMap.jpg"}},
+		{ AstronomicalObjectName::Pluto,		{0.1f, 122.0f, 6.3874f, 90494.45f, 39.48f, 0.18f, L"Content\\Textures\\PlutoColorMap.jpg"}},
 	};
 	
 	const DirectX::XMFLOAT3 AstronomicalObject::sLightPosition = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	// 点光源亮度, 默认50.0f
 	const float AstronomicalObject::sLightRangeAU = 50.0f;
 
 	AstronomicalObject::AstronomicalObject(Game & game, const shared_ptr<Camera>& camera, AstronomicalObjectName name) :
@@ -81,8 +83,8 @@ namespace Rendering
 		// Create an input layout
 		D3D11_INPUT_ELEMENT_DESC inputElementDescriptions[] =
 		{
-			{ "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },// 位置
+			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },// 纹理坐标
 			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		};
 
@@ -208,6 +210,7 @@ namespace Rendering
 		}
 	}
 
+	// 绘制
 	void AstronomicalObject::Draw(const GameTime& gameTime)
 	{
 		UNREFERENCED_PARAMETER(gameTime);
@@ -251,7 +254,7 @@ namespace Rendering
 		mSpriteBatch->Begin();
 
 		wostringstream helpLabel;
-		helpLabel << L"Toggle Animation (Space)" << "\n";
+		helpLabel << L"WASD for camera displacement, Mouse for camera direction" << "\n";
 
 		mSpriteFont->DrawString(mSpriteBatch.get(), helpLabel.str().c_str(), mTextPosition);
 		mSpriteBatch->End();

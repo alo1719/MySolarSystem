@@ -41,17 +41,17 @@ namespace Rendering
 		/**
 		* Astronomical objects cooresponding to those in the solar system.
 		*/
-		std::shared_ptr<AstronomicalObject> mSun;
-		std::shared_ptr<AstronomicalObject> mMercury;
-		std::shared_ptr<AstronomicalObject> mVenus;
-		std::shared_ptr<AstronomicalObject> mEarth;
-		std::shared_ptr<AstronomicalObject> mMoon;
-		std::shared_ptr<AstronomicalObject> mMars;
-		std::shared_ptr<AstronomicalObject> mJupiter;
-		std::shared_ptr<AstronomicalObject> mSaturn;
-		std::shared_ptr<AstronomicalObject> mUranus;
-		std::shared_ptr<AstronomicalObject> mNeptune;
-		std::shared_ptr<AstronomicalObject> mPluto;
+		std::shared_ptr<AstronomicalObject> mSun; //太阳
+		std::shared_ptr<AstronomicalObject> mMercury; //水星
+		std::shared_ptr<AstronomicalObject> mVenus; //金星
+		std::shared_ptr<AstronomicalObject> mEarth; //地球
+		std::shared_ptr<AstronomicalObject> mMoon; //月球
+		std::shared_ptr<AstronomicalObject> mMars; //火星
+		std::shared_ptr<AstronomicalObject> mJupiter; //木星
+		std::shared_ptr<AstronomicalObject> mSaturn; //土星
+		std::shared_ptr<AstronomicalObject> mUranus; //天王星
+		std::shared_ptr<AstronomicalObject> mNeptune; //海王星
+		std::shared_ptr<AstronomicalObject> mPluto; //冥王星
 
 	public:
 		/**

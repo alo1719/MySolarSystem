@@ -1,3 +1,8 @@
+// Éú³ÉË³Ðò
+// 1. pch.cpp
+// 2. Program.cpp
+// 3. RenderingGame.cpp
+// 4. AstronomicalObject.cpp
 #pragma once
 
 // Windows

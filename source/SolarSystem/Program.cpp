@@ -1,3 +1,4 @@
+// 包含了程序的基本信息
 #include "pch.h"
 
 using namespace Library;
@@ -6,7 +7,8 @@ using namespace std;
 
 void Shutdown(const wstring& className);
 
-const SIZE RenderTargetSize = { 1024, 768 };
+// 控制屏幕大小
+const SIZE RenderTargetSize = { 1440, 1080 };
 HWND mWindowHandle;
 WNDCLASSEX mWindow;
 unique_ptr<RenderingGame> mGame;

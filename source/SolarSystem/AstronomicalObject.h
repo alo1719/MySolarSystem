@@ -1,3 +1,4 @@
+// AstronomicalObject统管所有天文对象
 #pragma once
 
 #include "DrawableGameComponent.h"
@@ -45,7 +46,7 @@ namespace Rendering
 	struct AstronomicalObjectData
 	{
 		float AmbientIntensity;
-		float AxialTilt;
+		float AxialTilt; // 地轴偏转度
 		float RotationDays;
 		float RevolutionDays;
 		float OrbitalDistance;
