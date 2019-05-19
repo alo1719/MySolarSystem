@@ -8,18 +8,7 @@ using namespace Library;
 namespace Rendering
 {
 	const XMVECTORF32 RenderingGame::BackgroundColor = Colors::Black;
-	// 调整相机旋转角, 默认-70.0f
-	// 横向图
-	const float RenderingGame::sCameraRotation = -50.0f; // 视角逆时针旋转度数
-	// 俯视图
-	//const float RenderingGame::sCameraRotation = -250.0f; // 视角逆时针旋转度数
-
-	// 调整相机位置, 默认(-500.0f, 100.0f, 500.0f)
-	// 横向图
-	const XMFLOAT3 RenderingGame::sCameraPosition = XMFLOAT3(-1200.0f, 100.0f, 1200.0f); // 向远, 向上, 向侧
-	// 俯视图
-	//const XMFLOAT3 RenderingGame::sCameraPosition = XMFLOAT3(0.0f, 4800.0f, 000.0f); // 向远, 向上, 向侧
-
+	
 	RenderingGame::RenderingGame(std::function<void*()> getWindowCallback, std::function<void(SIZE&)> getRenderTargetSizeCallback) :
 		Game(getWindowCallback, getRenderTargetSizeCallback), mRenderStateHelper(*this)
 	{
@@ -28,6 +17,20 @@ namespace Rendering
 	// 进行初始化
 	void RenderingGame::Initialize()
 	{
+		// 横向图
+		if (directionMode == 1)
+		{
+			RenderingGame::sCameraRotation = -50.0f; // 视角逆时针旋转度数, 默认为-70.0f, 默认朝向-Z方向
+			RenderingGame::sCameraPosition = XMFLOAT3(-1200.0f, 100.0f, 1200.0f); // 向远, 向上, 向侧
+		}
+
+		// 俯视图
+		if (directionMode == 2)
+		{
+			RenderingGame::sCameraRotation = -90.0f; // 视角逆时针旋转度数
+			RenderingGame::sCameraPosition = XMFLOAT3(0.0f, 2400.0f, 000.0f); // 向远, 向上, 向侧
+		}
+
 		RasterizerStates::Initialize(mDirect3DDevice.Get());
 		SamplerStates::Initialize(mDirect3DDevice.Get());
 
@@ -93,8 +96,18 @@ namespace Rendering
 		mFpsComponent = make_shared<FpsComponent>(*this);
 		mFpsComponent->Initialize();
 
-		XMMATRIX matrix = XMMatrixRotationY(XMConvertToRadians(sCameraRotation));
-		mCamera->ApplyRotation(matrix);
+		// 横向图
+		if (directionMode == 1)
+		{
+			XMMATRIX matrix = XMMatrixRotationY(XMConvertToRadians(sCameraRotation));
+			mCamera->ApplyRotation(matrix);
+		}
+		// 俯视图
+		if (directionMode == 2)
+		{
+			XMMATRIX matrix = XMMatrixRotationX(XMConvertToRadians(sCameraRotation));
+			mCamera->ApplyRotation(matrix);
+		}
 		mCamera->SetPosition(sCameraPosition.x, sCameraPosition.y, sCameraPosition.z);
 	}
 

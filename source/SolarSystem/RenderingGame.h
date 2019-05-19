@@ -1,3 +1,4 @@
+// 负责渲染
 #pragma once
 
 #include "Game.h"
@@ -57,10 +58,13 @@ namespace Rendering
 		/**
 		* The default rotation for the camera to face the solar system.
 		*/
-		static const float sCameraRotation;
+		float sCameraRotation;
 		/**
 		* The default position for the camera to face the solar system.
 		*/
-		static const DirectX::XMFLOAT3 sCameraPosition;
+		DirectX::XMFLOAT3 sCameraPosition;
+		// directionMode = 1: 横向图
+		// directionMode = 2: 俯视图
+		int directionMode = 2;
 	};
 }
