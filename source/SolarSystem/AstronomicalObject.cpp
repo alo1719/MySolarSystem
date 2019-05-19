@@ -5,7 +5,7 @@
 */
 #define SCALE_TIME_FOR_DAY 0.05f;
 /**
-* 天体间距离, 默认300.0f, 推荐100.0f
+* 天体间距离, 默认300.0f, 推荐150.0f
 */
 #define SCALE_ASTRONOMICAL_UNIT 150.0f;
 
@@ -35,8 +35,8 @@ namespace Rendering
 	};
 	
 	const DirectX::XMFLOAT3 AstronomicalObject::sLightPosition = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	// 点光源亮度, 默认50.0f
-	const float AstronomicalObject::sLightRangeAU = 50.0f;
+	// 点光源亮度, 默认50.0f, 推荐100.0f
+	const float AstronomicalObject::sLightRangeAU = 100.0f;
 
 	AstronomicalObject::AstronomicalObject(Game & game, const shared_ptr<Camera>& camera, AstronomicalObjectName name) :
 		DrawableGameComponent(game, camera), mAstronomicalObjectName(name), mWorldMatrix(MatrixHelper::Identity),
@@ -254,7 +254,9 @@ namespace Rendering
 		mSpriteBatch->Begin();
 
 		wostringstream helpLabel;
-		helpLabel << L"WASD for camera displacement, Mouse for camera direction" << "\n";
+		helpLabel << "WASD for camera displacement" << "\n";
+		helpLabel << "Mouse for camera direction" << "\n";
+		helpLabel << "Press Esc to quit" << "\n";
 
 		mSpriteFont->DrawString(mSpriteBatch.get(), helpLabel.str().c_str(), mTextPosition);
 		mSpriteBatch->End();
