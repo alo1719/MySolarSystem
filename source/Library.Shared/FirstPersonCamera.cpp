@@ -92,25 +92,26 @@ namespace Library
 			bool positionChanged = false;
 			XMFLOAT2 movementAmount = Vector2Helper::Zero;
 			if (mKeyboard != nullptr)
-			{				
-				if (mKeyboard->IsKeyDown(Keys::W))
+			{	
+				// Accelerate Camera Movement
+				if (mKeyboard->IsKeyDown(Keys::W) || mKeyboard->IsKeyDown(Keys::Up))
 				{
-					movementAmount.y = 1.0f;
+					movementAmount.y = 4.0f;
 					positionChanged = true;
 				}
-				if (mKeyboard->IsKeyDown(Keys::S))
+				if (mKeyboard->IsKeyDown(Keys::S) || mKeyboard->IsKeyDown(Keys::Down))
 				{
-					movementAmount.y = -1.0f;
+					movementAmount.y = -4.0f;
 					positionChanged = true;
 				}
-				if (mKeyboard->IsKeyDown(Keys::A))
+				if (mKeyboard->IsKeyDown(Keys::A) || mKeyboard->IsKeyDown(Keys::Left))
 				{
-					movementAmount.x = -1.0f;
+					movementAmount.x = -4.0f;
 					positionChanged = true;
 				}
-				if (mKeyboard->IsKeyDown(Keys::D))
+				if (mKeyboard->IsKeyDown(Keys::D) || mKeyboard->IsKeyDown(Keys::Right))
 				{
-					movementAmount.x = 1.0f;
+					movementAmount.x = 4.0f;
 					positionChanged = true;
 				}
 			}
@@ -120,8 +121,9 @@ namespace Library
 			{				
 				if (mMouse->IsButtonHeldDown(MouseButtons::Left))
 				{
-					rotationAmount.x = -mMouse->X() * mMouseSensitivity;
-					rotationAmount.y = -mMouse->Y() * mMouseSensitivity;
+					// Accelerate Mouse Movement
+					rotationAmount.x = 3.0f * -mMouse->X() * mMouseSensitivity;
+					rotationAmount.y = 3.0f * -mMouse->Y() * mMouseSensitivity;
 					positionChanged = true;
 				}
 			}
